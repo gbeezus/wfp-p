@@ -25,7 +25,7 @@ COPY ["web/wp-content/plugins/custom-block-library/package*.json", "./"]
 RUN if test -e package-lock.json; then npm ci; else npm i; fi
 
 # Copy sources and build
-COPY ["[web|public]/wp-content/plugins/custom-block-library", "./"]
+COPY ["web/wp-content/plugins/custom-block-library", "./"]
 
 RUN set -ex \
   && npm run build \
