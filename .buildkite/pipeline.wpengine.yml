@@ -1,0 +1,170 @@
+# Consolidate the common configuration for reuse across multiple steps.
+definitions:
+  # Configure some default step values.
+  step-defaults: &step-defaults
+    timeout_in_minutes: 15
+    retry:
+      manual:
+        permit_on_passed: true
+
+  # Specify common plugin configurations.
+  plugins:
+    ecr: &ecr
+      ecr#v2.7.0:
+        login: true
+        no-include-email: true
+
+    forumone-extract: &forumone-extract
+      forumone/extract:
+        image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
+        from: /var/www/html/web
+        to: ${ARTIFACTS_LOCATION}
+
+  deploy-release-conditional: &deploy-release-conditional
+    if: |
+      build.pull_request.base_branch == null
+      && (
+        build.branch == 'live'
+        || build.branch == 'main'
+        || build.branch == 'integration'
+      )
+  post-deployment-conditional: &post-deployment-conditional
+    if: |
+      build.branch == 'live'
+      || build.branch == 'main'
+      || build.branch == 'integration'
+
+
+  git-remote-repo: &git-remote-repo
+    remote: git@git.wpengine.com:production/[WPENGINE-SITE-KEY].git
+
+  ssh-defaults: &ssh-defaults
+    ssh:
+      keyscan: git.wpengine.com
+
+  git: &git
+    git:
+      name: F1 Builder
+      email: support+f1builder@forumone.com
+
+  files: &files
+    files:
+      # Ensure we push all required files for WPEngine.
+      force-add:
+        - wp-admin
+        - wp-includes
+        - wp-content/acf-json
+        - wp-content/config
+        - wp-content/plugins
+        - wp-content/mu-plugins
+        - wp-content/themes
+        - index.php
+        - wp-comments-post.php
+        - wp-trackback.php
+        - wp-activate.php
+        - wp-links-opml.php
+        - license.txt
+        - readme.html
+        - wp-signup.php
+        - wp-login.php
+        - wp-cron.php
+        - wp-config.wpengine.php
+        - wp-config-sample.php
+        - wp-load.php
+        - xmlrpc.php
+        - wp-settings.php
+        - wp-blog-header.php
+        - wp-mail.php
+      # Ignore development items or items that should not be overwritten in WPEngine.
+      ignore:
+        - .buildkite
+        - .ddev
+        - .DS_Store
+        - .dockerignore
+        - .editorconfig
+        - .env
+        - .env.local
+        - .env.example
+        - .env.production
+        - .gitignore
+        - .gitattributes
+        - .htaccess
+        - .phpcs.xml.dist
+        - .phpmd.xml.dist
+        - phpstan-baseline.neon
+        - phpstan.neon.dist
+        - _wpeprivate
+        - auth.json
+        - composer.json
+        - composer.lock
+        - Dockerfile
+        - docker-compose.buildkite.yml
+        - docker-compose.buildkite-debug.yml
+        - capistrano
+        - tests
+        - web
+        - wp-content/object-cache.php
+        - wp-content/mu-plugins/mu-plugin.php
+        - wp-content/mu-plugins/slt-force-strong-passwords.php
+        - wp-content/mu-plugins/limit-login-attempts
+        - wp-content/mu-plugins/wpengine-common
+        - wp-config.php
+        - wp-config.pantheon.php
+        - wp-content/advanced-cache.php
+        - wp-content/wp-cache-config.php
+        - wp-content/uploads
+        - wp-content/blogs.dir
+        - wp-content/upgrade
+        - wp-content/backup-db
+        - wp-content/cache
+        - wp-content/cache/supercache
+        - wp-cli.yml
+
+steps:
+  - label: ":git: Deploy Build"
+    key: "deploy"
+    depends_on: "build-release"
+    <<: *step-defaults
+    command: echo "Preparing for Deployment..."
+    concurrency: 1
+    concurrency_group: '$BUILDKITE_BRANCH/deploy'
+    <<: *deploy-release-conditional
+    plugins:
+      # Log into ECR for this build step to access and push images.
+      - *ecr
+      # Extract artifacts from the release image.
+      - *forumone-extract
+
+      # Execute an artifact deployment using the defined branch to
+      # environment mapping and push artifacts to Git remote.
+      - forumone/artifact-push:
+          verbose: true
+          source-directory: ${ARTIFACTS_LOCATION}
+          # Default remote.
+          <<: *git-remote-repo
+          branches:
+            - match: 'integration'
+              # Target branch in environment repo, could be 'master' or 'main'
+              # depending on how the WPEngine repo was initialized.
+              target: 'main'
+            - match: 'main'
+              # Target branch in environment repo, could be 'master' or 'main'
+              # depending on how the WPEngine repo was initialized.
+              target: 'main'
+              # Environment specific remote.
+              remote: git@git.wpengine.com:production/[WPENGINE-SITE-KEY].git
+            - match: 'live'
+              # Target branch in environment repo, could be 'master' or 'main'
+              # depending on how the WPEngine repo was initialized.
+              target: 'main'
+              # Environment specific remote.
+              remote: git@git.wpengine.com:production/[WPENGINE-SITE-KEY].git
+          <<: *ssh-defaults
+          <<: *git
+          <<: *files
+
+  - label: ":wordpress: WPEngine Post Deployment Processing"
+    depends_on: deploy
+    # This should only execute on branches that have a corresponding environment.
+    <<: *post-deployment-conditional
+    command: ".buildkite/post-deploy.wpengine.sh"

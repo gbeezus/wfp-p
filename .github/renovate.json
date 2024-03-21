@@ -1,0 +1,60 @@
+{
+  "enabled": false,
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "hostRules": [
+    {
+      "matchHost": "satispress.forumone.dev",
+      "hostType": "packagist",
+      "authType": "Basic",
+      "encrypted": {
+        "username": "wcFMA/xDdHCJBTolARAAlLYGD6w8k+Qa1AyswRKkJ2ZXmkQF6XqgMVGFTCog/OZu/g9B0XoC/2hxrGVU+RA4F/Hs5j0CMgIUzkq6PCQYnB6b1+67HD2ckeVvGv+BwrRjd2lfuX2wH/42Zl1NGpqP69Ude972HSEsjNnJTDJ6tlSOZBC1Rvdz3KpYElNTxVamPtmXDK+YNtSLxXSwVNJGpyiwhlD4zYmqmaeIUKATnquNxjtijIGE+9fmD2ICbVgP8oPsAs5r2jlFgY+Dqst+8SshC+XzrcBH+p+aMesi7QxV1kVJ59Adrl50tYiTRlVQlIT9IGbNvUnZ7434IoQYHM6iFuzsGYtWMWeBHjyyeMElX4LbO5WGQECM6MycNG1wmjwgLVJD7s9S5CVt4r6R67xWCApAIRrR6GiTfAs+HYm/5WPD9IKtpKTXo2RBRNrnRlnTvo5+ZnJuX2EucYm8fILyd8DhIq9mShpKAb0Dis0Pvt0jtQBZa+/ThOck5JK1MTLYZbWoPwKKwIzMJ2l423vQMuOGpF+9c+omeA5jZ9i2NqajkSVqKPK2zgVPG67XKDblTCs8URM0su2WCCyYATLizbB0hOyVf3hmZCtnDpFiYuEQtoM+Zesid1eItYjOwpH7UKzlhCPohZcLFwEW1fivnz3wPsJbDTpNhPVBrtINUdWqC601OGjHy6Hs9C/SbwGAbl6ymnAO7mpMbkzbbI5bHOtluCYysmelbtXH9npd2uzjBMbfG/MNEgivS29zBMapbx7MnlH5m2IUimpNKRpP2FkBfg2AngBNCS4O5KFKNw2TvipZBIwRbhAzdf98GtJLtU7NThSlFuXkcbXd/w",
+        "password": "wcFMA/xDdHCJBTolAQ/7B1BtIzAxwjreF0Ai2vSFCuii2CwaMSgAlLY88E/kGXQJ1+SekgR6v055klwG6jKnRRsbpWODbfXEyfp2f+5Sr7sicnn/4q0ywLDFo5K0h7W221GuUVXQzRiWEdlZ088j/mpRItduz8bxBHpVg7z9PJqrosgF0rXG1jW53JEyPaYBGtkTH4HWGrhvIdPvOJPYv315VDUlAFb+tuCAu6sKAUQGClxHnk5CbaGTy8hKhL1yfXfZoKlqTzWiC0P93r6/wPGOvvM5SGn/uYPKSTOwTBBJsRqSLNt1XbD04GrDFAXtJM9NSIewKQTero95BBUBam3g/V1xC7qpjABlGi145ETrK0gox8J1p/4RdjkET5ujwYTZmxKWvGxua3NdZTQ0t6Pz8cm22W11BvCu+1OwIfmbromHr8tQ7c21l8cZW0E4Y5tYbaZIFgDwctnUc/dZap9talG2PHfm0+hblqIAvX8cwtQngkiORFBt6RBwHVzO4DCmUl4+YMNjM4wUPjV7x5h1XLfqnJTQAm71+0RQwvfy8fTLtTtGEvhRUgGFG2txOVJ5FA4JidNxRrhCMP+vQZfbSDiuZQYJUo/V8QLBLg911XyATskNRX9RPnhxGDsU+lVaOK6PFlxwEl/0J19ImvqK/bMHIRj1MjEvYP15ISYPej8+Jqsq0O6JtgzMU77SWQEnuAj8rlWrWlVEhgcl+k+L8j09y+PApgoR03uggdXONGDOVbHNJkY+BrVBmlKEbHM8kDM/hmwb7N1c0mj066GuH6SmwaJp+nYfSR+n2W3i0cd53ecqJfQM"
+      }
+    }
+  ],
+  "enabledManagers": [
+    "buildkite",
+    "composer",
+    "docker-compose",
+    "dockerfile",
+    "github-actions",
+    "nodenv",
+    "npm",
+    "nvm"
+  ],
+  "rangeStrategy": "in-range-only",
+  "automerge": false,
+  "separateMajorMinor": false,
+  "separateMultipleMajor": false,
+  "separateMinorPatch": false,
+  "packageRules": [
+    {
+      "groupName": "Buildite Dependencies",
+      "matchManagers": [
+        "buildkite"
+      ]
+    },
+    {
+      "groupName": "Composer Dependencies",
+      "matchManagers": [
+        "composer"
+      ],
+      "matchPaths": ["+(composer.json)"]
+   },
+   {
+     "groupName": "Dockerfile Dependencies",
+     "matchManagers": [
+       "dockerfile"
+     ]
+   },
+   {
+     "groupName": "GitHub Actions Dependencies",
+     "matchManagers": [
+       "github-actions"
+     ]
+   }
+  ]
+}

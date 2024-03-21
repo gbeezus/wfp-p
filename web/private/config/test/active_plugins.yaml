@@ -1,0 +1,9 @@
+active_plugins:
+    - advanced-custom-fields-pro/acf.php
+    - custom-block-library/custom-block-library.php
+    - faustwp/faustwp.php
+    - wp-cfm/wp-cfm.php
+    - wp-graphql-content-blocks/wp-graphql-content-blocks.php
+    - wp-graphql/wp-graphql.php
+.label: 'Active Plugins'
+.active_plugins_format: serialized

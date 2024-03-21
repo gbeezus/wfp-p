@@ -1,0 +1,32 @@
+.git
+
+# Composer generated files
+web/wp/
+web/wp-content/vendor
+
+# Do not ignore the theme
+!web/wp-content/themes/gesso
+
+# Ignore Wordfence logs
+web/wp-content/wflogs/
+
+# Ignore file uploads
+web/wp-content/uploads/*
+
+# Do not ignore WP-CFM files
+!web/wp-content/config/.gitkeep
+!web/wp-content/config/dev/
+!web/wp-content/config/stage/
+!web/wp-content/config/prod/
+
+# Do not ignore WP-CFM files
+!web/private/config/.gitkeep
+!web/private/config/dev/
+!web/private/config/stage/
+!web/private/config/prod/
+
+##### Customize project-specific rules below this line. #####
+
+# Don't ignore plugins that can't be bundled with composer
+!web/wp-content/plugins/wp-graphql-content-blocks
+

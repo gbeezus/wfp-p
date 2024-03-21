@@ -1,0 +1,88 @@
+# This pipeline is stricly for the WordPress Project repo linting and can be deleted for all other projects.
+# Consolidate the common configuration for reuse across multiple steps.
+definitions:
+  # Configure some default step values.
+  step-defaults: &step-defaults
+    timeout_in_minutes: 15
+    retry:
+      manual:
+        permit_on_passed: true
+
+  # Specify common agent queue parameters.
+  queues:
+    # Docker-based tasks should run in the Docker queue.
+    docker-agents: &docker-agents
+      agents:
+        queue: "docker-builders"
+
+  # Specify common plugin configurations.
+  plugins:
+    aws-sm: &aws-sm
+      seek-oss/aws-sm#v2.3.1:
+        file:
+          - path: "./auth.json"
+            secret-id: "buildkite/wordpress_composer_auth"
+    ecr: &ecr
+      ecr#v2.7.0:
+        login: true
+        no-include-email: true
+
+  linting-conditional: &linting-conditional
+    if: |
+      (
+        build.pull_request.base_branch == null
+        && build.branch != 'live'
+        && build.branch != 'main'
+      )
+      || (
+        build.pull_request.base_branch != null
+        && build.branch != 'main'
+      )
+
+env:
+  # Enable BuildKit engine.
+  DOCKER_BUILDKIT: 1
+  BUILDKIT_PROGRESS: plain
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+  # Identify the address for the shared Buildkite ECR repository.
+  IMAGE_REPOSITORY: "165761832703.dkr.ecr.us-east-1.amazonaws.com"
+
+  # Define a common namespace for images to be published within the shared ECR repo.
+  ECR_NAMESPACE: "${IMAGE_REPOSITORY}/buildkite"
+
+  # Define service directory were the Dockerfile is used
+  DOCKERFILE_LOCATION: "./"
+
+  # Define the staring path for artifacts to be deployed from.
+  ARTIFACTS_LOCATION: "./artifacts"
+
+steps:
+  - label: ":heavy_check_mark: :php: CodeSniffer Lint"
+    key: "lint-phpcs"
+    <<: *step-defaults
+    <<: *docker-agents
+    <<: *linting-conditional
+    commands:
+      - 'echo "--- :docker: Build PHP_CodeSniffer Linting Docker Image"'
+      - "docker build --target php-linting -t ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}-php-linting ${DOCKERFILE_LOCATION}"
+      - 'echo "--- :docker: Run PHP_CodeSniffer Linting"'
+      - "docker container run --rm ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}-php-linting composer phpcs"
+    plugins:
+      # Pull the COMPOSER_AUTH from AWS Secrets Manager.
+      - *aws-sm
+
+  - label: ":heavy_check_mark: :php: Stan Lint"
+    key: "lint-phpstan"
+    <<: *step-defaults
+    <<: *docker-agents
+    <<: *linting-conditional
+    commands:
+      - 'echo "--- :docker: Build PHPStan Linting Image"'
+      - "docker build --target php-linting -t ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}-php-linting ${DOCKERFILE_LOCATION}"
+      - 'echo "--- :docker: Run PHPStan Linting"'
+      - "docker container run --rm ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}-php-linting composer phpstan"
+    plugins:
+      # Pull the COMPOSER_AUTH from AWS Secrets Manager.
+      - *aws-sm
+

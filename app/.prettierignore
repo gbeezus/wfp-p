@@ -1,0 +1,4 @@
+source/01-global/icon/**/*.svg
+source/01-global/icon/**/*.tsx
+source/**/*.mdx
+types/__generated__

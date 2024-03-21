@@ -1,0 +1,35 @@
+#!/bin/sh
+
+## Description: Run Custom Block Library commands for custom block development.
+## Usage: customblocks install|build|watch|dev|lint|format|(some other command in the theme service)
+## Example: "ddev customblocks build"
+
+case $1 in
+  install)
+    npm ci
+  ;;
+  build)
+    npm run build
+  ;;
+	format)
+		npm run format
+	;;
+	dev)
+		npm run dev
+	;;
+  lint)
+    npm run lint
+  ;;
+	block)
+		node lib/block.js
+	;;
+	rename)
+		node lib/rename.js
+	;;
+  "")
+    echo "Usage: customblocks install|build|watch|dev|lint|format|(some other command in the theme service)"
+  ;;
+  *)
+    "$@"
+  ;;
+esac

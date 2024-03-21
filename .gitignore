@@ -1,0 +1,123 @@
+### WP Starter
+.env
+.user.ini
+uploads.ini
+auth.json
+!web/robots.txt
+!web/wp-config.pantheon.php
+!web/wp-config.wpengine.php
+!web/wp-config.php
+
+# Composer generated files
+.env.example
+web/wp
+web/wp-content/vendor
+
+# Ignore themes/plugins with exceptions for custom code
+!web/wp-content/config/
+web/wp-content/config/*
+!web/private/config/
+web/private/config/*
+!web/wp-content/mu-plugins/
+web/wp-content/mu-plugins/*
+!web/wp-content/plugins/
+web/wp-content/plugins/*
+!web/wp-content/themes/
+web/wp-content/themes/*
+
+# Ignore Worfence logs
+web/wp-content/wflogs/
+
+# Ignore file uploads
+web/wp-content/uploads/*
+
+# Do not ignore theme.
+!web/wp-content/themes/gesso
+
+# Do not ignore WP-CFM files
+!web/wp-content/config/.gitkeep
+!web/wp-content/config/dev/
+!web/wp-content/config/stage/
+!web/wp-content/config/prod/
+!web/private/config/.gitkeep
+!web/private/config/dev/
+!web/private/config/test/
+!web/private/config/live/
+
+##### Customize project-specific rules below this line. #####
+
+# Don't ignore plugins that can't be bundled with composer
+#!web/wp-content/plugins/<plugin-name>/
+!web/wp-content/plugins/wp-graphql-content-blocks
+!web/wp-content/plugins/google-site-kit-dev-settings
+!web/wp-content/plugins/custom-block-library
+
+#But ignore some of their internal stuff build with buildkite
+web/wp-content/plugins/custom-block-library/build
+web/wp-content/plugins/custom-block-library/node_modules
+
+# Do not ignore custom MU Plugins.
+!web/wp-content/mu-plugins/f1-acf-local-json-dir.php
+!web/wp-content/mu-plugins/f1-redis.php
+!web/wp-content/mu-plugins/wp-cfm.php
+!web/wp-content/mu-plugins/wpe-env.php
+!web/wp-content/mu-plugins/wpstarter-mu-loader.php
+
+# wordpress specific
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/*
+wp-content/backup-db/*
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/*
+wp-content/cache/supercache/*
+
+# wpengine specific
+.smushit-status
+.gitattributes
+_wpeprivate
+wp-content/object-cache.php
+wp-content/mu-plugins/mu-plugin.php
+wp-content/mu-plugins/slt-force-strong-passwords.php
+wp-content/mu-plugins/limit-login-attempts
+wp-content/mu-plugins/wpengine-common
+wp-content/mysql.sql
+
+# Build artifacts
+artifacts
+
+# IDE files
+.buildpath
+.project
+.settings
+.idea
+.vscode
+
+# OS files
+.ddev/config.mutagen.yaml
+.DS_Store
+Thumbs.db
+tags*
+
+# Archives & Development Files
+*.bz2
+*.zip
+*.tgz
+*.7z
+*.gz
+*.sql
+*.log
+*.txt
+
+# Node/NPM
+node_modules
+
+# Composer
+vendor
+
+# Local PHPCS configuration
+phpcs.xml
+
+# Local PHPStan configuration.
+phpstan.neon

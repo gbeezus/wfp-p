@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "custom-block-library/post-selector",
+	"title": "Post Selector",
+	"category": "theme",
+	"editorScript": "file:../build/post-selector.js",
+	"style": "file:../build/post-selector.css",
+	"attributes": {
+		"selectedPostId": {
+			"type": "number",
+			"default": -1
+		},
+		"selectedPostTitle": {
+			"type": "string",
+			"default": "Post Title"
+		},
+		"selectedPostImage": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}

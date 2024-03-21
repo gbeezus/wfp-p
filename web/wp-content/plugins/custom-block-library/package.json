@@ -1,0 +1,25 @@
+{
+	"name": "custom-block-library",
+	"version": "1.0.0",
+	"description": "A collection of custom blocks.",
+	"author": "Forum One",
+	"license": "ISC",
+	"devDependencies": {
+		"@wordpress/eslint-plugin": "^17.10.0",
+		"@wordpress/icons": "^9.39.0",
+		"@wordpress/scripts": "^26.19.0",
+		"glob": "^10.3.10",
+		"inquirer": "^8.2.0",
+		"mkdirp": "^3.0.1",
+		"prettier": "^3.1.0",
+		"react": "^18.2.0"
+	},
+	"scripts": {
+		"format": "wp-scripts format",
+		"lint": "wp-scripts lint-js",
+		"build": "npm run lint && wp-scripts build",
+		"dev": "wp-scripts start",
+		"block": "node lib/block.js",
+		"rename": "node lib/rename.js"
+	}
+}

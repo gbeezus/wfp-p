@@ -1,0 +1,36 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-accordion', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-back\\-to\\-top', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-button', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-cards', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 3
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-skiplinks', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-slider', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$args of function wp_enqueue_block_style expects array\\{handle\\?\\: string, src\\?\\: string\\|false, deps\\?\\: array\\<string\\>, ver\\?\\: bool\\|string\\|null, media\\?\\: string, path\\?\\: string\\|null\\}, array\\{handle\\: 'gesso\\-standalone…', src\\: string, ver\\: int\\|false\\} given\\.$#"
+			count: 1
+			path: web/wp-content/themes/gesso/functions.php

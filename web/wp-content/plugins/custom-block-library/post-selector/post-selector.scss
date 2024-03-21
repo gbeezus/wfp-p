@@ -1,0 +1,35 @@
+.post-selector {
+  border: 1px solid black;
+  min-height: 150px;
+  padding: 1rem;
+  position: relative;
+
+  h2 {
+    color: white !important;
+    position: relative;
+    z-index: 100;
+  }
+}
+
+.post-selector__opaque {
+  background-color: black;
+  opacity: .5;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.post-selector__background {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

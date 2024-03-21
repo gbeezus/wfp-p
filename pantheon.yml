@@ -1,0 +1,41 @@
+api_version: 1
+web_docroot: true
+php_version: 8.1
+object_cache:
+  version: 6.2
+enforce_https: transitional+subdomains
+
+protected_web_paths:
+  - /web/.user.ini
+
+# Quicksilver Platform Integration Hooks
+# https://pantheon.io/docs/pantheon-yml#quicksilver
+workflows:
+
+  # Commits to dev
+  sync_code:
+    after:
+      - type: webphp
+        description: Import configuration with WP-CFM after each code pushed
+        script: private/scripts/wp_cfm_pull.php
+
+  # Deploy code to Test or Live
+  deploy:
+    after:
+      - type: webphp
+        description: Import configuration with WP-CFM after deploy code to Test or Live
+        script: private/scripts/wp_cfm_pull.php
+
+  # After cloning database between environments.
+  clone_database:
+    after:
+      - type: webphp
+        description: Import configuration with WP-CFM after cloning database between environments
+        script: private/scripts/wp_cfm_pull.php
+
+  # After creating a multidev environment.
+  create_cloud_development_environment:
+    after:
+      - type: webphp
+        description: Import configuration with WP-CFM after creating a multidev environment
+        script: private/scripts/wp_cfm_pull.php

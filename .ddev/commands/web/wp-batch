@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+## Description: Runs a batch of WP-CLI commands from a source file.
+## Usage: wp-batch <filename>
+## Example: "ddev wp-batch ~/Documents/wp-accounts.txt"
+
+case $1 in
+  "")
+    echo "Usage: wp-batch <filename>"
+  ;;
+  *)
+    FILE=$1
+    readarray -t LINES < "$FILE"
+
+    for LINE in "${LINES[@]}"; do
+        echo "Running: '$LINE'"
+        eval "$LINE"
+    done
+  ;;
+esac

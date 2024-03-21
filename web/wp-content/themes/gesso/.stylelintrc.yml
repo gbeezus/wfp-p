@@ -1,0 +1,31 @@
+extends:
+  - '@wordpress/stylelint-config/scss'
+  - stylelint-config-prettier
+plugins:
+  - stylelint-prettier
+  - './lib/stylelintLVHFA.js'
+  - stylelint-order
+rules:
+  # Prettier automatically removes the empty line
+  at-rule-empty-line-before: null
+  # Stylelint doesn't understand gesso design tokens
+  font-weight-notation: null
+  color-named: null
+  rule-empty-line-before: null
+  # Allow BEM style classes
+  selector-class-pattern: null
+  # @wordpress/prettier-config uses single quotes,
+  # so prettier and stylelint are in conflict here
+  string-quotes: single
+  # Enforce alphabetical ordering of properties,
+  # which is an F1 convention but not required by WP
+  order/order:
+    - - type: at-rule
+        hasBlock: false
+      - custom-properties
+      - declarations
+    - unspecified: ignore
+      disableFix: true
+  order/properties-alphabetical-order: error
+  # Results in false positives
+  no-descending-specificity: null

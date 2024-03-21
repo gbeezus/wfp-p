@@ -1,0 +1,16 @@
+@layer config, global, layouts, components, utilities;
+
+@layer config.base {
+  @import 'vars/box-shadow.css';
+  @import 'vars/constrain.css';
+  @import 'vars/duration.css';
+  @import 'vars/easing.css';
+  @import 'vars/palette.css';
+  @import 'vars/spacing.css';
+  @import 'vars/typography.css';
+}
+
+@layer config.usage {
+  @import 'vars/colors.css';
+  @import 'vars/form.css';
+}

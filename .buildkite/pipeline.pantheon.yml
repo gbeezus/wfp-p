@@ -1,0 +1,116 @@
+# Consolidate the common configuration for reuse across multiple steps.
+definitions:
+  # Configure some default step values.
+  step-defaults: &step-defaults
+    timeout_in_minutes: 15
+    retry:
+      manual:
+        permit_on_passed: true
+
+  # Specify common plugin configurations.
+  plugins:
+    ecr: &ecr
+      ecr#v2.7.0:
+        login: true
+        no-include-email: true
+
+    forumone-extract: &forumone-extract
+      forumone/extract:
+        image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
+        from: /var/www/html
+        to: ${ARTIFACTS_LOCATION}
+
+  deploy-release-conditional: &deploy-release-conditional
+    if: |
+      build.pull_request.base_branch == null
+      && (
+        build.branch == 'live'
+        || build.branch == 'main'
+        || build.branch == 'integration'
+      )
+
+  git-remote-repo: &git-remote-repo
+    remote: [SSH_REPO_FROM_PANTHEON]
+
+  ssh-defaults: &ssh-defaults
+    ssh:
+      keyscan: [PANTHEON_HOST]
+
+  git: &git
+    git:
+      name: F1 Builder
+      email: support+f1builder@forumone.com
+
+  files: &files
+    files:
+      force-add:
+        - web/private
+        - web/wp-content/themes/gesso/css
+        - web/wp-content/themes/gesso/js
+        - web/wp-content/themes/gesso/dependencyGraph.json
+        - web/wp-content/themes/gesso/pattern-lab
+        - web/wp
+        - web/wp-content/plugins
+        - web/wp-content/vendor
+        - web/wp-config.php
+        - web/wp-config.pantheon.php
+      # Ignore development items or items that should not be overwritten in Pantheon.
+      ignore:
+        - .buildkite
+        - .ddev
+        - .DS_Store
+        - .dockerignore
+        - .editorconfig
+        - .env
+        - .env.local
+        - .env.example
+        - .env.production
+        - .gitignore
+        - .gitattributes
+        - .htaccess
+        - .phpcs.xml.dist
+        - .phpmd.xml.dist
+        - phpstan-baseline.neon
+        - phpstan.neon.dist
+        - _wpeprivate
+        - auth.json
+        - Dockerfile
+        - docker-compose.buildkite.yml
+        - docker-compose.buildkite-debug.yml
+        - web/wp-config.wpengine.php
+        - capistrano
+        - tests
+
+steps:
+  - label: ":git: Deploy Build"
+    key: "deploy"
+    depends_on: "build-release"
+    <<: *step-defaults
+    command: echo "Preparing for Deployment..."
+    concurrency: 1
+    concurrency_group: '$BUILDKITE_BRANCH/deploy'
+    <<: *deploy-release-conditional
+    plugins:
+      # Log into ECR for this build step to access and push images.
+      - *ecr
+      # Extract artifacts from the release image.
+      - *forumone-extract
+
+      # Execute an artifact deployment using the defined branch to
+      # environment mapping and push artifacts to Git remote.
+      - forumone/artifact-push:
+          verbose: true
+          source-directory: ${ARTIFACTS_LOCATION}
+          <<: *git-remote-repo
+          branches:
+            - match: 'integration'
+              target: 'f1-dev'
+            - match: 'main'
+              target: 'f1-stage'
+            - match: 'live'
+              target: 'master'
+          <<: *ssh-defaults
+          <<: *git
+          <<: *files
+
+

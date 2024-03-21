@@ -1,0 +1,46 @@
+# Example rsync provider configuration.
+
+# This will pull a database and files from a network location, for example,
+# server or other jumphost. It operates inside the web container and uses
+# ssh, so you need to `ddev auth ssh` first.
+
+# To use this configuration,
+#
+# 1. You need a database dump and/or user-generated files tarball that you
+#    have access to somewhere on the internet
+# 2. Copy rsync.yaml.example to rsync.yaml (or name it as you see fit)
+# 3. `ddev auth ssh` (only needs to be done once per ddev session or reboot)
+# 4. Use `ddev pull rsync` to pull the project database and files.
+# 5. `ddev push rsync` can push the project database and files
+
+# Note that while this is done in the web container (because rsync will always be there)
+# it could also be done on the host, and then you wouldn't need the
+# `ddev auth ssh`
+
+environment_variables:
+  sshhost: <username>@<hostname>
+  sitepath: /var/www/vhosts/<PROJECT_ID>.www/web/wp
+  filespath: /var/www/vhosts/<PROJECT_ID>.www/shared/web/wp-content/uploads/
+
+auth_command:
+  command: |
+    set -eu -o pipefail
+    ssh-add -l >/dev/null || ( echo "Please 'ddev auth ssh' before running this command." && exit 1 )
+
+db_pull_command:
+  command: |
+    # set -x   # You can enable bash debugging output by uncommenting
+    set -eu -o pipefail
+    pushd /var/www/html/.ddev/.downloads >/dev/null
+    wp db export --single-transaction --quick --lock-tables=false --ssh="${sshhost}" --path="${sitepath}" - | gzip -9 - > db.sql.gz
+  service: web
+
+files_pull_command:
+  command: |
+    # set -x   # You can enable bash debugging output by uncommenting
+    set -eu -o pipefail
+    ls /var/www/html/.ddev >/dev/null # This just refreshes stale NFS if possible
+    pushd /var/www/html/.ddev/.downloads >/dev/null
+    rsync -avhzP --ignore-existing --stats -e ssh "${sshhost}:${filespath}" files/
+  service: web
+
