@@ -1,4 +1,4 @@
-# WordPress + Faust Experiment
+# WordPress + Faust Pantheon Experiment
 
 ## Development Branch Naming & Workflow
 
