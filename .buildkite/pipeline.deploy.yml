@@ -45,10 +45,8 @@ definitions:
     files:
       force-add:
         - web/private
-        - web/wp-content/themes/gesso/css
-        - web/wp-content/themes/gesso/js
-        - web/wp-content/themes/gesso/dependencyGraph.json
-        - web/wp-content/themes/gesso/pattern-lab
+        - web/wp-content/themes/gesso/build/css
+        - web/wp-content/themes/gesso/build/js
         - web/wp
         - web/wp-content/plugins
         - web/wp-content/vendor
