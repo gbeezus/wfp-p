@@ -115,6 +115,7 @@ node_modules
 
 # Composer
 vendor
+!web/wp-content/plugins/wp-graphql-content-blocks/vendor
 
 # Local PHPCS configuration
 phpcs.xml
