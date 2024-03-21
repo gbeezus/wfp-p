@@ -70,7 +70,7 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
 
   # Dockerfile build stage target.
-  DOCKERFILE_STAGE_TARGET: "artifact"
+  DOCKERFILE_STAGE_TARGET: "pantheon"
 
   # Identify the address for the shared Buildkite ECR repository.
   IMAGE_REPOSITORY: "165761832703.dkr.ecr.us-east-1.amazonaws.com"

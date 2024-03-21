@@ -1,4 +1,4 @@
-ARG PHP_VERSION="8.1"
+ARG PHP_VERSION="8.2"
 ARG COMPOSER_VERSION="2.6"
 ARG NODE_VERSION="18"
 
@@ -97,20 +97,6 @@ WORKDIR /var/www/html/web
 # Copy all artifacts into the production-ready release stage for the final release image.
 COPY pantheon.yml /var/www/html/
 # End of project specific Pantheon tasks.
-
-FROM artifact AS wpengine
-
-# This is for project specific WPEngine tasks.
-WORKDIR /var/www/html/web
-
-# Remove the WP Core 2022 Theme due to Large File Size Assest.
-RUN cp -R wp/wp-admin wp/wp-includes ./ && \
-  cp -R wp/wp-content/themes/* ./wp-content/themes && \
-  rm wp/composer.json && \
-  find wp/ -maxdepth 1 -type f -exec cp {} ./ \; && \
-  rm -rf wp && \
-  rm -rf wp-content/themes/twentytwentytwo
-# End of project specific WPEngine tasks.
 
 # Making `artifact` default build so if you build using the dockerfile
 # an image gets build without requireing a `--target` in the argument.

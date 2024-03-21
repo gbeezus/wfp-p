@@ -30,11 +30,11 @@ definitions:
       )
 
   git-remote-repo: &git-remote-repo
-    remote: [SSH_REPO_FROM_PANTHEON]
+    remote: ssh://codeserver.dev.a0631ebf-a1a6-43bd-8a88-f6fd3004cc75@codeserver.dev.a0631ebf-a1a6-43bd-8a88-f6fd3004cc75.drush.in:2222/~/repository.git
 
   ssh-defaults: &ssh-defaults
     ssh:
-      keyscan: [PANTHEON_HOST]
+      keyscan: codeserver.dev.a0631ebf-a1a6-43bd-8a88-f6fd3004cc75.drush.in:2222
 
   git: &git
     git:
@@ -106,7 +106,8 @@ steps:
             - match: 'integration'
               target: 'f1-dev'
             - match: 'main'
-              target: 'f1-stage'
+              target: 'master'
+              #target: 'f1-stage'
             - match: 'live'
               target: 'master'
           <<: *ssh-defaults
