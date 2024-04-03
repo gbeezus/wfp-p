@@ -70,6 +70,7 @@ steps:
             - match: 'live'
               target: 'live'
           <<: *ssh-defaults
-          <<: *git
+          #<<: *git
+          message: "Artifact push: $BUILDKITE_BUILD_NUMBER"
 
 
