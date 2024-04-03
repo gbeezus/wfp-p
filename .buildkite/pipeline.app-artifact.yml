@@ -42,13 +42,13 @@ definitions:
 #      email: support+f1builder@forumone.com
 
 steps:
-  - label: ":git: Deploy Build"
-    key: "deploy"
+  - label: ":git: Push App Artifact"
+    key: "app-artifact-push"
     depends_on: "build-release"
     <<: *step-defaults
-    command: echo "Preparing for Deployment..."
+    command: echo "Preparing for Push..."
     concurrency: 1
-    concurrency_group: '$BUILDKITE_BRANCH/deploy'
+    concurrency_group: '$BUILDKITE_BRANCH/app-artifact-push'
     <<: *deploy-release-conditional
     plugins:
       # Log into ECR for this build step to access and push images.
