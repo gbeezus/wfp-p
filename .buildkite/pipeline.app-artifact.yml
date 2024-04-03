@@ -30,7 +30,7 @@ definitions:
       )
 
   git-remote-repo: &git-remote-repo
-    remote: git@github.com:gbeezus/f1-wfp-app.git
+    remote: git@github.com:forumone/f1-wfp-app.git
 
   ssh-defaults: &ssh-defaults
     ssh:
@@ -38,8 +38,8 @@ definitions:
 
   git: &git
     git:
-      name: Olu Adeyanju
-      email: oadeyanju@forumone.com
+      name: F1 Builder
+      email: support+f1builder@forumone.com
 
 steps:
   - label: ":git: Push App Artifact"
@@ -72,5 +72,3 @@ steps:
           <<: *ssh-defaults
           <<: *git
           message: "Artifact push: $BUILDKITE_BUILD_NUMBER"
-
-
