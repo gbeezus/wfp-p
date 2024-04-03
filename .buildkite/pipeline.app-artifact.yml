@@ -30,7 +30,7 @@ definitions:
       )
 
   git-remote-repo: &git-remote-repo
-    remote: ssh://git@github.com:gbeezus/f1-wfp-app.git
+    remote: git@github.com:gbeezus/f1-wfp-app.git
 
   ssh-defaults: &ssh-defaults
     ssh:
