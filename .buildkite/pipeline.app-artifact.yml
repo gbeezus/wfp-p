@@ -36,10 +36,10 @@ definitions:
     ssh:
       keyscan: github.com
 
-#  git: &git
-#    git:
-#      name: F1 Builder
-#      email: support+f1builder@forumone.com
+  git: &git
+    git:
+      name: Olu Adeyanju
+      email: oadeyanju@forumone.com
 
 steps:
   - label: ":git: Push App Artifact"
@@ -70,7 +70,7 @@ steps:
             - match: 'live'
               target: 'live'
           <<: *ssh-defaults
-          #<<: *git
+          <<: *git
           message: "Artifact push: $BUILDKITE_BUILD_NUMBER"
 
 
