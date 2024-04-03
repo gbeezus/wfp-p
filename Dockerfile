@@ -73,6 +73,7 @@ RUN composer install
 # Build release image.
 FROM busybox AS artifact
 
+RUN mkdir /app
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 
@@ -98,6 +99,9 @@ WORKDIR /var/www/html/web
 COPY pantheon.yml /var/www/html/
 # End of project specific Pantheon tasks.
 
+# Copy app to release image for separate artifact push
+copy ["/app", "/app"]
+
 # Making `artifact` default build so if you build using the dockerfile
-# an image gets build without requireing a `--target` in the argument.
+# an image gets built without requiring a `--target` in the argument.
 FROM artifact

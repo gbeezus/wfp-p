@@ -146,6 +146,10 @@ ddev gesso watch
 - Stage:
 - Prod:
 
+## Deployment Considerations
+
+This project will push app artifacts to a separate repository.
+
 ## Additional Resources
 
 ### Xdebug

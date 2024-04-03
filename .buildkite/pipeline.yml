@@ -81,8 +81,11 @@ env:
   # Define service directory were the Dockerfile is used
   DOCKERFILE_LOCATION: "./"
 
-  # Define the staring path for artifacts to be deployed from.
+  # Define the starting path for artifacts to be deployed from.
   ARTIFACTS_LOCATION: "./artifacts"
+
+  # Define the starting path for app artifacts to be pushed from.
+  APP_ARTIFACTS_LOCATION: "./app-artifacts"
 
 steps:
   - label: ":heavy_check_mark: :php: CodeSniffer Lint"
@@ -180,3 +183,13 @@ steps:
     <<: *deployment-conditional
     command: buildkite-agent pipeline upload .buildkite/pipeline.deploy.yml
 
+  - wait: ~
+
+  - label: ":pipeline: Upload App Artifact Pipeline"
+    key: "app-artifact-pipeline"
+    depends_on:
+      - "build-release"
+      - "deploy-pipeline"
+    <<: *step-defaults
+    <<: *deployment-conditional
+    command: buildkite-agent pipeline upload .buildkite/pipeline.app-artifact.yml
